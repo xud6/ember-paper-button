@@ -1,14 +1,14 @@
 name: Plan Release
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-      - master
-  pull_request_target: # This workflow has permissions on the repo, do NOT run code from PRs in this workflow. See https://securitylab.github.com/research/github-actions-preventing-pwn-requests/
-    types:
-      - labeled
-      - unlabeled
+#  push:
+#    branches:
+#      - main
+#      - master
+#  pull_request_target: # This workflow has permissions on the repo, do NOT run code from PRs in this workflow. See https://securitylab.github.com/research/github-actions-preventing-pwn-requests/
+#    types:
+#      - labeled
+#      - unlabeled
 
 concurrency:
   group: plan-release # only the latest one of these should ever be running
