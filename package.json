@@ -1,7 +1,7 @@
 {
   "name": "ember-paper",
-  "version": "1.0.0",
-  "description": "The Ember approach to Material Design.",
+  "version": "0.0.0",
+  "description": "PaperButton strip from ember-paper",
   "keywords": [
     "ember-addon",
     "material",
@@ -10,11 +10,11 @@
     "paper"
   ],
   "bugs": {
-    "url": "https://github.com/adopted-ember-addons/ember-paper/issues"
+    "url": "https://github.com/xud6/ember-paper-button/issues"
   },
-  "repository": "https://github.com/adopted-ember-addons/ember-paper",
+  "repository": "https://github.com/xud6/ember-paper-button",
   "license": "MIT",
-  "author": "Miguel Andrade <jmandrade0@gmail.com>",
+  "author": "xud6 <m@xud6.cn>",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -128,7 +128,7 @@
   },
   "ember-addon": {
     "configPath": "tests/dummy/config",
-    "demoURL": "https://ember-paper.netlify.app",
+    "demoURL": "https://not.exist.yet",
     "before": "ember-cli-sri",
     "versionCompatibility": {
       "ember": ">=3.20.0 < 4.0.0"
