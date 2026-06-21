@@ -1,0 +1,122 @@
+{{! template-lint-disable no-duplicate-landmark-elements }}
+<PageToolbar @pageTitle="Autocomplete" @isDemo={{true}} />
+
+<DocContent>
+
+  <PaperCard>
+    <PaperCardContent>
+      <h2>Basic Usage</h2>
+      <blockquote>Use <code>\{{paper-autocomplete}}</code> to search for matches from local or remote data sources.</blockquote>
+      <form>
+        {{! BEGIN-SNIPPET autocomplete.basic-usage }}
+        <PaperAutocomplete @disabled={{this.firstDisabled}} @onCreate={{this.addCountry}} @options={{this.items}} @allowClear={{true}} @defaultHighlighted={{if this.enableDefaultHighlighted this.highlightFirstMatch}} @searchText={{readonly this.countrySearchText}} @onSearchTextChange={{fn (mut this.countrySearchText)}} @selected={{this.selectedCountry}} @search={{if this.simulateQuery this.searchCountries}} @searchField="name" @labelPath="name" @placeholder="Select a Country..." @noMatchesMessage="Oops this country doesn't exist. Create a new country?" @onSelectionChange={{fn (mut this.selectedCountry)}} />
+        {{! END-SNIPPET }}
+      </form>
+      <p>
+        {{#if this.selectedCountry}}
+          Selected country is {{this.selectedCountry.name}} ({{this.selectedCountry.code}})
+        {{else}}
+          Nothing selected...
+        {{/if}}
+      </p>
+      <p>
+        {{#if this.countrySearchText}}
+          Search text is {{this.countrySearchText}}
+        {{else}}
+          No search text
+        {{/if}}
+      </p>
+      <PaperCheckbox @value={{this.firstDisabled}} @onChange={{fn (mut this.firstDisabled)}}>
+        Disable input
+      </PaperCheckbox>
+      <PaperCheckbox @value={{this.simulateQuery}} @onChange={{fn (mut this.simulateQuery)}}>
+        Simulate query
+      </PaperCheckbox>
+      <PaperCheckbox @value={{this.enableDefaultHighlighted}} @onChange={{fn (mut this.enableDefaultHighlighted)}}>
+        Highlight first match
+      </PaperCheckbox>
+      <PaperButton @primary={{true}} @label="Reset search-Text" @onClick={{fn (mut this.countrySearchText) ""}} />
+      <PaperButton @primary={{true}} @label="Reset selected" @onClick={{fn (mut this.selectedCountry) null}} />
+
+      <h3>Template</h3>
+      <CodeSnippet @name="autocomplete.basic-usage.hbs" />
+
+    </PaperCardContent>
+  </PaperCard>
+
+  <PaperCard>
+    <PaperCardContent>
+      <h2>Block Custom template</h2>
+      <blockquote>Use <code>\{{paper-autocomplete}}</code> with custom templates to show styled autocomplete results.</blockquote>
+
+      {{!-- searchText=(readonly templateSeachText) --}}
+
+      <form>
+        {{! BEGIN-SNIPPET autocomplete.block-custom-template }}
+        {{#paper-autocomplete
+          placeholder="Type e.g. ember, paper, one, two etc."
+          options=this.arrayOfItems
+          selected=this.selectedItem
+          onSelectionChange=(fn (mut this.selectedItem))
+          as |item term|}}
+          <span class="item-title">
+            {{paper-icon "star"}}
+            <span>
+              <PaperAutocompleteHighlight @searchText={{term.searchText}} @flags="i" @label={{item}} />
+            </span>
+          </span>
+        {{else}}
+          Whoops! could not find!
+        {{/paper-autocomplete}}
+        {{! END-SNIPPET }}
+      </form>
+
+      <p>
+        Selected: {{if this.selectedItem this.selectedItem "None"}}
+      </p>
+
+      <h3>Template</h3>
+      <CodeSnippet @name="autocomplete.block-custom-template.hbs" />
+    </PaperCardContent>
+  </PaperCard>
+
+  <PaperCard>
+    <PaperCardContent>
+      <h2>Floating Label</h2>
+      <blockquote>The following example demonstrates floating labels being used as a normal form element.</blockquote>
+      <form class="layout-row">
+        {{! BEGIN-SNIPPET autocomplete.floating-label }}
+        <PaperInput @label="Name" @value={{this.name}} @onChange={{fn (mut this.name)}} @class="flex" />
+        <PaperAutocomplete @disabled={{readonly this.disabled2}} @required={{readonly this.isRequired}} @triggerClass="flex" @options={{this.items}} @selected={{this.selectedCountry2}} @search={{if this.simulateQuery2 this.searchCountries}} @searchField="name" @labelPath="name" @label="Select a Country..." @allowClear={{readonly this.allowClearWithLabel}} @noMatchesMessage="Oops this country doesn't exist." @onSelectionChange={{fn (mut this.selectedCountry2)}} as |country select|>
+          <PaperAutocompleteHighlight @label={{country.name}} @searchText={{select.searchText}} @flags="i" />
+        </PaperAutocomplete>
+
+        {{! END-SNIPPET }}
+      </form>
+      <p>
+        {{#if this.selectedCountry2}}
+          Selected country is {{this.selectedCountry2.name}} ({{this.selectedCountry2.code}})
+        {{else}}
+          Nothing is selected.
+        {{/if}}
+      </p>
+      <PaperCheckbox @value={{readonly this.disabled2}} @onChange={{fn (mut this.disabled2)}}>
+        Disable input
+      </PaperCheckbox>
+      <PaperCheckbox @value={{readonly this.simulateQuery2}} @onChange={{fn (mut this.simulateQuery2)}}>
+        Simulate query
+      </PaperCheckbox>
+      <PaperCheckbox @value={{this.isRequired}} @onChange={{fn (mut this.isRequired)}}>
+        Is required
+      </PaperCheckbox>
+      <PaperCheckbox @value={{readonly this.allowClearWithLabel}} @onChange={{fn (mut this.allowClearWithLabel)}}>
+        Allow Clear
+      </PaperCheckbox>
+
+      <h3>Template</h3>
+      <CodeSnippet @name="autocomplete.floating-label.hbs" />
+
+    </PaperCardContent>
+  </PaperCard>
+
+</DocContent>

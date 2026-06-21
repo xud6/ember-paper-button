@@ -1,0 +1,39 @@
+{{#if this.title}}
+  <h3>{{this.title}}</h3>
+{{/if}}
+
+{{yield}}
+<div class="table-wrapper">
+    <table class="paper-api">
+    {{#if this.header}}
+      <thead>
+        <tr>
+          {{#each this.header as |heading|}}
+            <th>{{heading}}</th>
+          {{/each}}
+        </tr>
+      </thead>
+    {{/if}}
+    {{#each this.categories as |category|}}
+      <tbody>
+        {{#each category as |row|}}
+          {{#if (is-subheading row)}}
+            <tr class="subheading">
+              <td colspan="3">{{row}}</td>
+            </tr>
+          {{else}}
+            <tr>
+              {{#each row as |cell index|}}
+                {{#if index}}
+                  <td>{{cell}}</td>
+                {{else}}
+                  <td><code>{{cell}}</code></td>
+                {{/if}}
+              {{/each}}
+            </tr>
+          {{/if}}
+        {{/each}}
+      </tbody>
+    {{/each}}
+  </table>
+</div>

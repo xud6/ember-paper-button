@@ -1,0 +1,28 @@
+$primary: 'deep-orange';
+$warn: 'amber';
+$accent: 'pink';
+
+@import 'ember-paper';
+@import 'catalog';
+@import 'demo';
+
+/**
+ * Needed styles to set correct widths.
+ */
+
+md-sidenav.md-locked-open {
+  position: sticky !important;
+  height: 100vh;
+}
+
+md-toolbar.md-warn {
+  a, button {
+    &.md-button.md-default-theme:not(.md-primary):not(.md-accent) {
+      color: $dark-contrast-color;
+    }
+  }
+}
+
+.inner-sidenav {
+  position: relative;
+}

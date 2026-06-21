@@ -1,0 +1,21 @@
+/* eslint-disable ember/no-classic-components */
+/**
+ * @module ember-paper
+ */
+import { inject as service } from '@ember/service';
+
+import Component from '@ember/component';
+
+/**
+ * @class PaperSidenavToggle
+ * @extends Ember.Component
+ */
+export default class extends Component {
+  tagName = '';
+  name = 'default';
+  @service paperSidenav;
+
+  toggle = () => {
+    this.paperSidenav.toggle(this.name);
+  };
+}

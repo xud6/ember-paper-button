@@ -1,0 +1,15 @@
+{{#unless this.closed}}
+  <PaperBackdrop @skipLockBody={{@skipLockBody}} @opaque={{true}} @class="md-sidenav-backdrop" @onClick={{this.localOnBackdropTap}} />
+{{/unless}}
+
+<PaperSidenavInner
+  @class={{@class}}
+  @name={{this.name}}
+  @position={{this.position}}
+  @lockedOpen={{this.lockedOpen}}
+  @closed={{this.closed}}
+  @closeOnClick={{this.closeOnClick}}
+  @onToggle={{paper-optional-action this.onToggle}}
+  ...attributes>
+  {{yield}}
+</PaperSidenavInner>

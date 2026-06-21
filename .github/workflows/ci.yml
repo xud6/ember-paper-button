@@ -1,0 +1,123 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request: {}
+
+concurrency:
+  group: ci-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: "Tests"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PERCY_TOKEN: web_fd6630a88fbe17df0319f50cf1ff005ba127bfea4c61fdd535c69275a648ec28
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.x
+          cache: pnpm
+      - name: Install Dependencies
+        run: pnpm i --frozen-lockfile
+      - name: Lint
+        run: pnpm run lint
+      - name: Run Tests
+        run: pnpm percy exec -- pnpm run test:ember
+
+  floating:
+    name: "Floating Dependencies"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18.x
+          cache: pnpm
+      - name: Install Dependencies
+        run: pnpm install --no-lockfile
+      - name: Run Tests
+        run: pnpm test:ember
+
+  try-scenarios:
+    name: ${{ matrix.try-scenario }}
+    runs-on: ubuntu-latest
+    needs: "test"
+    timeout-minutes: 10
+
+    strategy:
+      fail-fast: false
+      matrix:
+        try-scenario:
+          - ember-lts-3.28
+          - ember-lts-4.4
+          - ember-lts-4.8
+          - ember-lts-4.12
+          - ember-lts-5.4
+          - ember-lts-5.8
+          - ember-release
+          - embroider-safe
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.x
+          cache: pnpm
+      - name: Install Dependencies
+        run: pnpm i --frozen-lockfile
+      - name: Run Tests
+        run: pnpm ember try:one ${{ matrix.try-scenario }}
+
+  failing-try-scenarios:
+    name: ${{ matrix.try-scenario }} Allowed to fail
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: "test"
+
+    permissions:
+      pull-requests: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        try-scenario:
+          - ember-beta
+          - ember-canary
+          - embroider-optimized
+          - no-deprecations
+          - ember-release-no-deprecations
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.x
+          cache: pnpm
+      - name: Install Dependencies
+        run: pnpm i --frozen-lockfile
+      - name: Run Tests
+        id: tests
+        run: pnpm ember try:one ${{ matrix.try-scenario }}
+        continue-on-error: true
+      - uses: mainmatter/continue-on-error-comment@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          outcome: ${{ steps.tests.outcome }}
+          test-id: ${{ matrix.try-scenario }}

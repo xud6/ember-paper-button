@@ -1,0 +1,19 @@
+/* eslint-disable prettier/prettier */
+'use strict';
+
+module.exports = {
+  extends: 'recommended',
+  rules: {
+    'attribute-indentation': false,
+    'no-inline-styles': false
+  },
+  overrides: [
+    {
+      files: ['tests/**/*.js'],
+      rules: {
+        'no-unused-block-params': false,
+        'require-input-label': false,
+      },
+    },
+  ],
+};

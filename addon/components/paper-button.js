@@ -1,0 +1,73 @@
+/* eslint-disable ember/no-classic-components, ember/no-component-lifecycle-hooks, ember/no-mixins, ember/require-tagless-components */
+/**
+ * @module ember-paper
+ */
+import { reads } from '@ember/object/computed';
+
+import Component from '@ember/component';
+import FocusableMixin from 'ember-paper/mixins/focusable-mixin';
+import ProxiableMixin from 'ember-paper/mixins/proxiable-mixin';
+import { invokeAction } from 'ember-paper/utils/invoke-action';
+
+/**
+ * @class PaperButton
+ * @extends Ember.Component
+ * @uses FocusableMixin
+ * @uses ProxiableMixin
+ */
+export default Component.extend(FocusableMixin, ProxiableMixin, {
+  tagName: 'button',
+  classNames: ['md-default-theme', 'md-button'],
+  raised: false,
+  iconButton: false,
+
+  // circular button
+  fab: reads('mini'),
+
+  mini: false,
+  type: 'button',
+  href: null,
+  target: null,
+
+  didInsertElement() {
+    this._super(...arguments);
+    if (this.parentComponent) {
+      this.parentComponent.register(this);
+    }
+  },
+
+  didDestroyElement() {
+    this._super(...arguments);
+    if (this.parentComponent) {
+      this.parentComponent.deRegister(this);
+    }
+  },
+
+  attributeBindings: ['type', 'href', 'target', 'title', 'download', 'rel'],
+
+  classNameBindings: [
+    'raised:md-raised',
+    'iconButton:md-icon-button',
+    'fab:md-fab',
+    'mini:md-mini',
+    'warn:md-warn',
+    'accent:md-accent',
+    'primary:md-primary',
+  ],
+
+  init() {
+    this._super(...arguments);
+    if (this.href) {
+      this.setProperties({
+        tagName: 'a',
+        type: null,
+      });
+    }
+  },
+
+  click(e) {
+    invokeAction(this, 'onClick', e);
+    // Prevent bubbling, if specified. If undefined, the event will bubble.
+    return this.bubbles;
+  },
+});
