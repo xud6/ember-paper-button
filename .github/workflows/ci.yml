@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
-      PERCY_TOKEN: web_fd6630a88fbe17df0319f50cf1ff005ba127bfea4c61fdd535c69275a648ec28
+      PERCY_TOKEN: web_66f76e22806bc426e9115470e0703ffb800fec91ac1dd859fe6f5c8327dc3228
 
     steps:
       - uses: actions/checkout@v4
