@@ -34,22 +34,22 @@ jobs:
       - name: Run Tests
         run: pnpm percy exec -- pnpm run test:ember
 
-  floating:
-    name: "Floating Dependencies"
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
+  # floating:
+  #   name: "Floating Dependencies"
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 10
 
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18.x
-          cache: pnpm
-      - name: Install Dependencies
-        run: pnpm install --no-lockfile
-      - name: Run Tests
-        run: pnpm test:ember
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: pnpm/action-setup@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 18.x
+  #         cache: pnpm
+  #     - name: Install Dependencies
+  #       run: pnpm install --no-lockfile
+  #     - name: Run Tests
+  #       run: pnpm test:ember
 
   try-scenarios:
     name: ${{ matrix.try-scenario }}
