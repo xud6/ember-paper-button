@@ -1,5 +1,10 @@
 # Ember Paper Changelog
 
+
+
+
+
+
 ## Release (2025-11-21)
 
 * ember-paper 1.0.0 (minor)
